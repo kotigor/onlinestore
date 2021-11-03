@@ -1,8 +1,11 @@
 package com.konstantinov.onlinestore.rest.controller;
 
-import com.konstantinov.onlinestore.dto.Cake;
-import com.konstantinov.onlinestore.dto.Cakes;
+import com.konstantinov.onlinestore.goods.CakeServiceImpl;
+import com.konstantinov.onlinestore.rest.dto.Cake;
+import com.konstantinov.onlinestore.rest.dto.CakeDetail;
+import com.konstantinov.onlinestore.rest.dto.Cakes;
 import com.konstantinov.onlinestore.exception.CakeNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,45 +20,28 @@ import java.util.List;
 public class CakeController {
     private final Cakes cakeList = new Cakes();
     private Long id = 3L;
+    private final CakeServiceImpl cakeService;
 
-    public CakeController() {
-        Cake cake1 = new Cake();
-        cake1.setName("Napoleon");
-        cake1.setPrice(new BigDecimal(100));
-        cake1.setWeight(new BigDecimal(100));
-        cake1.setImage("cake1.jpg");
-        cake1.setCalories(new BigDecimal(100));
-        Cake cake2 = new Cake();
-        cake2.setName("Rose");
-        cake2.setPrice(new BigDecimal(200));
-        cake2.setWeight(new BigDecimal(200));
-        cake2.setImage("cake1.jpg");
-        cake2.setCalories(new BigDecimal(200));
+    @Autowired
+    public CakeController(CakeServiceImpl cakeService) {
         List<Cake> tmp = new ArrayList<Cake>();
-        cake1.setId(1L);
-        cake2.setId(2L);
-        tmp.add(cake1);
-        tmp.add(cake2);
         cakeList.setCakeList(tmp);
+        this.cakeService = cakeService;
     }
+
 
     @GetMapping(value = "cakes", produces = MediaType.APPLICATION_JSON_VALUE)
     public Cakes cakes() {
-        return cakeList;
+        return cakeService.getCakes();
     }
 
     @GetMapping(value = "cake/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cake getCakeById(@PathVariable Long id) {
-        return cakeList.getCakeList().stream()
-                .filter(c -> c.getId().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new CakeNotFoundException("Cake not exist"));
+    public CakeDetail getCakeById(@PathVariable Long id) {
+        return cakeService.getCakeById(id);
     }
 
     @PostMapping(value = "cake", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void addCake(@Valid @RequestBody Cake cake){
-        cake.setId(id);
-        cakeList.getCakeList().add(cake);
-        id++;
+    public void addCake(@Valid @RequestBody CakeDetail cake){
+        cakeService.addCake(cake);
     }
 }

@@ -1,4 +1,4 @@
-package com.konstantinov.onlinestore.dto;
+package com.konstantinov.onlinestore.rest.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,9 +13,6 @@ import java.util.List;
 @Schema
 @Validated
 public class Cakes {
-    public Cakes(){
-        cakeList = new ArrayList<Cake>();
-    }
     @NotNull
     @Schema(description = "Name", required = true)
     @JsonProperty("cake_list")
