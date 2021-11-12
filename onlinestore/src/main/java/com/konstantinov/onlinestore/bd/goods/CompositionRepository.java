@@ -1,4 +1,4 @@
-package com.konstantinov.onlinestore.goods;
+package com.konstantinov.onlinestore.bd.goods;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

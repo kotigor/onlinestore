@@ -1,4 +1,4 @@
-package com.konstantinov.onlinestore.goods;
+package com.konstantinov.onlinestore.bd.goods;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -32,7 +32,7 @@ public class CakeEntity {
     private String description;
 
     @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "CAKE_COMPOSITION", joinColumns = @JoinColumn(name = "CAKE_ID", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "COMPOSITION_ID", referencedColumnName = "id"))
     private Set<CompositionEntity> composition = new HashSet<>();
 

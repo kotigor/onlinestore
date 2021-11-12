@@ -1,4 +1,4 @@
-package com.konstantinov.onlinestore.goods;
+package com.konstantinov.onlinestore.bd.goods;
 
 import lombok.*;
 import org.hibernate.Hibernate;
@@ -14,7 +14,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class CompositionEntity {
     @ToString.Exclude
-    @ManyToMany(cascade = CascadeType.MERGE,mappedBy = "composition")
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "composition", fetch = FetchType.LAZY)
     private Set<CakeEntity> cakes = new HashSet<>();
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;

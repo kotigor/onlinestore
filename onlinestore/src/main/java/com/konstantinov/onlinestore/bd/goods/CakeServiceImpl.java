@@ -1,4 +1,4 @@
-package com.konstantinov.onlinestore.goods;
+package com.konstantinov.onlinestore.bd.goods;
 
 import com.konstantinov.onlinestore.rest.dto.Cake;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
@@ -6,8 +6,6 @@ import com.konstantinov.onlinestore.rest.dto.Cakes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

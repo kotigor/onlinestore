@@ -1,6 +1,5 @@
-package com.konstantinov.onlinestore.goods;
+package com.konstantinov.onlinestore.bd.goods;
 
-import com.konstantinov.onlinestore.rest.dto.Cake;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Cakes;
 
