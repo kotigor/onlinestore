@@ -4,6 +4,7 @@ import com.konstantinov.onlinestore.bd.orders.OrderService;
 import com.konstantinov.onlinestore.bd.users.UserService;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Order;
+import com.konstantinov.onlinestore.rest.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,8 @@ public class OrderController {
 
     @PostMapping(value = "order", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createOrder(@Valid @RequestBody Order order){
-        userService.getOrCreateUser(order.getUser());
+        User user = userService.getOrCreateUser(order.getUser());
+        order.setUser(user);
         orderService.createOrder(order);
     }
 }
