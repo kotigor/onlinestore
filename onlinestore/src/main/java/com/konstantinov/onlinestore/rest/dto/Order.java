@@ -43,6 +43,11 @@ public class Order {
     @JsonProperty("payment")
     private PaymentMethod payment;
 
+    @NotNull
+    @Schema(description = "address", required = true)
+    @JsonProperty("address")
+    private String address;
+
     @Null
     @Schema(description = "Order status", required = false)
     @JsonProperty("status")

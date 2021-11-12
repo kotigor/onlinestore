@@ -17,17 +17,14 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final OrderCakeRepository orderCakeRepository;
     private final CakeRepository cakeRepository;
     private final UserRepository userRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository,
-                            OrderCakeRepository orderCakeRepository,
                             CakeRepository cakeRepository,
                             UserRepository userRepository){
         this.orderRepository = orderRepository;
-        this.orderCakeRepository = orderCakeRepository;
         this.cakeRepository = cakeRepository;
         this.userRepository = userRepository;
     }
@@ -40,18 +37,18 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.setPayment(order.getPayment());
         orderEntity.setStatus(OrderStatus.NEW);
         orderEntity.setUser(userRepository.findByNumber(order.getUser().getNumber()));
-        orderRepository.save(orderEntity);
+        orderEntity.setAddress(order.getAddress());
         List<OrderCakeEntity> orderCakeEntities = new ArrayList<>();
         order.getCakes().forEach((k, v) -> {
             CakeEntity cakeEntity = cakeRepository.getById(k);
-            if(cakeEntity == null)
-                System.out.println("null");
             OrderCakeEntity orderCakeEntity = new OrderCakeEntity();
             orderCakeEntity.setCake(cakeEntity);
             orderCakeEntity.setOrder(orderEntity);
             orderCakeEntity.setCount(v);
-            orderCakeRepository.save(orderCakeEntity);
+            orderCakeEntities.add(orderCakeEntity);
         });
+        orderEntity.setCakes(orderCakeEntities);
+        orderRepository.save(orderEntity);
     }
 
     @Override

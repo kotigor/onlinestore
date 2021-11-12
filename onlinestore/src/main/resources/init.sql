@@ -39,7 +39,8 @@ CREATE TABLE order_info
     delivery INTEGER,
     payment  INTEGER,
     status   INTEGER,
-    date     TIMESTAMP WITHOUT TIME ZONE,
+    date     date,
+    address  VARCHAR(255),
     CONSTRAINT pk_order_info PRIMARY KEY (id)
 );
 

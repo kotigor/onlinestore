@@ -28,7 +28,7 @@ public class OrderEntity {
     private UserEntity user;
 
     @ToString.Exclude
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
     private List<OrderCakeEntity> cakes = new ArrayList<>();
 
     private DeliveryMethod delivery;
@@ -38,6 +38,8 @@ public class OrderEntity {
     private OrderStatus status;
 
     private LocalDate date;
+
+    private String address;
 
     @Override
     public boolean equals(Object o) {
