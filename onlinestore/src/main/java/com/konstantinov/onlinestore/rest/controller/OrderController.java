@@ -2,7 +2,6 @@ package com.konstantinov.onlinestore.rest.controller;
 
 import com.konstantinov.onlinestore.bd.orders.OrderService;
 import com.konstantinov.onlinestore.bd.users.UserService;
-import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Order;
 import com.konstantinov.onlinestore.rest.dto.User;
 import org.springframework.beans.factory.annotation.Autowired;

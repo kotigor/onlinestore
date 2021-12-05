@@ -36,6 +36,6 @@ public class CakeController {
 
     @PostMapping(value = "cake", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addCake(@Valid @RequestBody CakeDetail cake){
-        cakeService.addCake(cake);
+        cakeService.updateOrCreateCakeDetail(cake);
     }
 }

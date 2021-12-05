@@ -7,8 +7,13 @@ import com.konstantinov.onlinestore.rest.dto.Order;
 import com.konstantinov.onlinestore.rest.dto.User;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,24 +30,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public User getUserById(Long id) {
         UserEntity userEntity = userRepository.getById(id);
-        User user = new User();
-        user.setId(userEntity.getId());
-        user.setNumber(userEntity.getNumber());
-        user.setName(userEntity.getName());
-        user.setSurname(userEntity.getSurname());
-        /*List<Order> orders = userEntity.getOrders().stream().map(o -> {
-            Order newOrder = new Order();
-            newOrder.setId(o.getId());
-            Map<Long, Integer> cakes = o.getCakes().stream().collect(Collectors.toMap(OrderCakeEntity::getId, OrderCakeEntity::getCount));
-            newOrder.setCakes(cakes);
-            newOrder.setDate(o.getDate().toString());
-            newOrder.setPayment(o.getPayment());
-            newOrder.setStatus(o.getStatus());
-            newOrder.setDeliveryMethod(o.getDelivery());
-            return newOrder;
-        }).collect(Collectors.toList());
-        user.setOrders(orders);*/
-        return user;
+        return mapUserEntityToUser(userEntity, new User());
     }
 
     @Override
@@ -58,6 +46,38 @@ public class UserServiceImpl implements UserService{
         newUserEntity.setSurname(user.getSurname());
         Long id = userRepository.save(newUserEntity).getId();
         user.setId(id);
+        return user;
+    }
+
+    @Override
+    public List<User> getSomeUsers(Integer page){
+        Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        List<UserEntity> userEntities = userRepository.findAll(limit).toList();
+        return userEntities
+                .stream()
+                .map(ue -> mapUserEntityToUser(ue, new User()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateUser(User user) {
+        UserEntity userEntity = userRepository.getById(user.getId());
+        userEntity.setSurname(user.getSurname());
+        userEntity.setName(user.getName());
+        userRepository.save(userEntity);
+    }
+
+    @Override
+    public User getUserByNumber(String number) {
+        UserEntity userEntity = userRepository.findByNumber(number);;
+        return mapUserEntityToUser(userEntity, new User());
+    }
+
+    private User mapUserEntityToUser(UserEntity userEntity, User user){
+        user.setId(userEntity.getId());
+        user.setNumber(userEntity.getNumber());
+        user.setName(userEntity.getName());
+        user.setSurname(userEntity.getSurname());
         return user;
     }
 }

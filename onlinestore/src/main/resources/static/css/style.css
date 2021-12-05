@@ -1,0 +1,42 @@
+.list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user-card {
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit-icon{
+    width: 24px;
+    height: 24px;
+    background-image: url("../service-icons/edit-icon.svg");
+}
+
+.logout{
+    display: flex;
+    justify-content: space-between;
+}
+
+.back-button,
+.logout-button{
+    padding: 10px 25px;
+    border-radius: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    text-decoration: none;
+    margin: 5px;
+    background: rgba(155,155,155,0.5);
+}
+
+.more-icon{
+    background-image: url(../service-icons/more-icon.svg);
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}

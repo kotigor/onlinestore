@@ -1,10 +1,14 @@
 package com.konstantinov.onlinestore.bd.goods;
 
+import com.konstantinov.onlinestore.bd.orders.OrderEntity;
 import com.konstantinov.onlinestore.rest.dto.Cake;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Cakes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 import java.util.Set;
@@ -23,43 +27,11 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public Cakes getCakes(){
-        List<CakeEntity> cakeEntityList = cakeRepository.findAll();
-        List<Cake> cakeList = cakeEntityList.stream().map(c -> {
-            Cake cake = new Cake();
-            cake.setId(c.getId());
-            cake.setCalories(c.getCalories());
-            cake.setName(c.getName());
-            cake.setImage(c.getImage());
-            cake.setPrice(c.getPrice());
-            cake.setWeight(c.getWeight());
-            return cake;
-        }).collect(Collectors.toList());
         Cakes cakes = new Cakes();
-        cakes.setCakeList(cakeList);
+        cakes.setCakeList(getSomeCake(0, 1000));
         return cakes;
     }
 
-    @Override
-    public void addCake(CakeDetail cake) {
-        CakeEntity cakeEntity = new CakeEntity();
-        cakeEntity.setCalories(cake.getCalories());
-        cakeEntity.setName(cake.getName());
-        cakeEntity.setImage(cake.getImage());
-        cakeEntity.setWeight(cake.getWeight());
-        cakeEntity.setPrice(cake.getPrice());
-        cakeEntity.setDescription(cake.getDescription());
-        Set<CompositionEntity> compositionEntities = cake.getComposition().stream().map(c -> {
-            CompositionEntity comp = new CompositionEntity();
-            CompositionEntity fromBd = compositionRepository.findByName(c);
-            if(fromBd != null)
-                comp = fromBd;
-            else
-                comp.setName(c);
-            return compositionRepository.save(comp);
-        }).collect(Collectors.toSet());
-        cakeEntity.setComposition(compositionEntities);
-        cakeRepository.save(cakeEntity);
-    }
 
     @Override
     public CakeDetail getCakeById(Long id) {
@@ -71,8 +43,62 @@ public class CakeServiceImpl implements CakeService {
         cakeDetail.setImage(cakeEntity.getImage());
         cakeDetail.setPrice(cakeEntity.getPrice());
         cakeDetail.setWeight(cakeEntity.getWeight());
+        cakeDetail.setId(cakeEntity.getId());
         Set<String> composition = cakeEntity.getComposition().stream().map(c -> c.getName()).collect(Collectors.toSet());
         cakeDetail.setComposition(composition);
         return cakeDetail;
     }
+
+    @Override
+    public List<Cake> getSomeCake(Integer page, Integer size) {
+        Pageable limit = PageRequest.of(page, size);
+        List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        return cakeEntities.stream().map(ce -> {
+            Cake cake = new Cake();
+            cake.setWeight(ce.getWeight());
+            cake.setCalories(ce.getCalories());
+            cake.setPrice(ce.getPrice());
+            cake.setImage(ce.getImage());
+            cake.setName(ce.getName());
+            cake.setId(ce.getId());
+            return cake;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateCake(Cake cake) {
+        CakeEntity ce = cakeRepository.getById(cake.getId());
+        ce.setCalories(cake.getCalories());
+        ce.setImage(cake.getImage());
+        ce.setPrice(cake.getPrice());
+        ce.setWeight(cake.getWeight());
+        ce.setName(cake.getName());
+        cakeRepository.save(ce);
+    }
+
+    @Override
+    public void updateOrCreateCakeDetail(CakeDetail cakeDetail) {
+        CakeEntity ce;
+        if(cakeDetail.getId() == null)
+            ce = new CakeEntity();
+        else
+            ce = cakeRepository.getById(cakeDetail.getId());
+        ce.setCalories(cakeDetail.getCalories());
+        ce.setImage(cakeDetail.getImage());
+        ce.setPrice(cakeDetail.getPrice());
+        ce.setWeight(cakeDetail.getWeight());
+        ce.setName(cakeDetail.getName());
+        ce.setDescription(cakeDetail.getDescription());
+        cakeDetail.getComposition().forEach(c -> {
+            CompositionEntity composition = compositionRepository.findByName(c);
+            if(composition == null){
+                composition = new CompositionEntity();
+                composition.setName(c);
+                composition = compositionRepository.save(composition);
+            }
+            ce.getComposition().add(composition);
+        });
+        cakeRepository.save(ce);
+    }
+
 }

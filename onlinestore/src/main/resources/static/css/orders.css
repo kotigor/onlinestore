@@ -1,0 +1,53 @@
+table {
+    border: 1px solid grey;
+}
+
+th {
+    border: 1px solid grey;
+}
+
+td {
+    border: 1px solid grey;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.selected,
+.allowed{
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #000000;
+    background: gray;
+    min-width: 200px;
+}
+
+.cakes{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.selected-container{
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type=number]{
+    width: 50px;
+}
+
+.input-id{
+    width: 30px;
+}
+
+td input{
+    width: 150px;
+}
+
+.more-icon{
+    background-image: url(../service-icons/more-icon.svg);
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}

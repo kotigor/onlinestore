@@ -18,7 +18,7 @@ import java.util.Map;
 @Schema(description = "Order")
 @Validated
 public class Order {
-    @Null
+    //@Null
     @Schema(description = "id", required = false)
     @JsonProperty("id")
     private Long id;

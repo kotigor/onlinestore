@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/cakes.css" rel="stylesheet">
+    <title>Cakes</title>
+</head>
+<body>
+<div class="logout">
+    <a class="back-button" href="/admin">Назад</a>
+    <a class="logout-button" href="/admin/logout">Выйти</a>
+</div>
+<div class="cakes-container">
+    <table class="order-card">
+        <tr>
+            <th>ID торта</th>
+            <th>Название торта</th>
+            <th>Калории, ккал.</th>
+            <th>Ссылка на изображение торта</th>
+            <th>Изображение торта</th>
+            <th>Цена, р.</th>
+            <th>Вес, г.</th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr th:each="cakeListItem: ${cakeList}">
+            <form th:action="@{/admin/updateCommonInfoAboutCake}" method="POST">
+                <td><input class="input-id" readonly type="text" name="id" th:value="${cakeListItem.id}"></td>
+                <td><input type="text" name="name" th:value="${cakeListItem.name}"></td>
+                <td><input type="number" name="calories" th:value="${cakeListItem.calories}"></td>
+                <td><input type="text" name="image" th:value="${cakeListItem.image}"></td>
+                <td><div class="cake-image" th:style="${'background-image: url(/' + cakeListItem.image + ')'}"></div></td>
+                <td><input type="number" name="price" th:value="${cakeListItem.price}"></td>
+                <td><input type="number" name="weight" th:value="${cakeListItem.weight}"></td>
+                <td><a th:href="${'/admin/cake/' + cakeListItem.id}">
+                    <div class="more-icon"></div>
+                </a></td>
+                <td><input type="submit" value="Save"></td>
+            </form>
+        </tr>
+    </table>
+</div>
+
+<h1>Добавить торт</h1>
+<form action="#" th:action="@{/admin/cake}" th:object="${cake}" method="post" enctype="multipart/form-data">
+    <p><label> Название:</label>
+        <input type="text" th:field="*{name}" />
+    </p>
+    <p><label> Калории:</label>
+        <input type="text" th:field="*{calories}" />
+    </p>
+    <p><label> Цена:</label>
+        <input type="text" th:field="*{price}" />
+    </p>
+    <p><label> Вес:</label>
+        <input type="text" th:field="*{weight}" />
+    </p>
+    <p><label> Изображение:</label>
+        <input type="file" name="imgFile" />
+    </p>
+    <p><label> Описание:</label>
+        <textarea th:field="*{description}"></textarea>
+    </p>
+    <p><label> Состав(ингредиенты разделять переносом строки):</label>
+        <textarea name="composition"></textarea>
+    </p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+<script>
+
+</script>
+</html>
