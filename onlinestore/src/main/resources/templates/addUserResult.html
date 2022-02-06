@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add user result</title>
+    <link href="/css/reset.css" rel="stylesheet">
+</head>
+<body>
+    <h1>Result</h1>
+    <p th:text="'surname: ' + ${user.surname}" />
+    <p th:text="'name: ' + ${user.name}" />
+    <p th:text="'number: ' + ${user.number}" />
+    <a href="/admin/addUser">Submit another message</a>
+</body>
+</html>

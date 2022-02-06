@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/cakes.css" rel="stylesheet">
+    <title>Users</title>
+</head>
+<body>
+<div class="logout">
+    <a class="back-button" href="/admin">Назад</a>
+    <a class="logout-button" href="/admin/logout">Выйти</a>
+</div>
+<div class="list">
+    <div class="user-list">
+        <form>
+            <label> Поиск по номеру телефона:
+                <input type="text" name="number">
+            </label>
+            <input type="submit">
+        </form>
+        <table class="user-card">
+            <tr>
+                <th>ID</th>
+                <th>Фамилия</th>
+                <th>Имя</th>
+                <th>Номер телефона</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <tr th:each="userListItem: ${usersList}">
+                <form th:action="@{/admin/updateCommonInfoAboutUser}" method="POST">
+                    <td><input class="input-id" readonly type="text" name="id" th:value="${userListItem.id}"></td>
+                    <td><input type="text" name="surname" th:value="${userListItem.surname}"></td>
+                    <td><input type="text" name="name" th:value="${userListItem.name}"></td>
+                    <td><input readonly type="text" name="number" th:value="${userListItem.number}"></td>
+                    <td><a th:href="@{/admin/orders(number=${userListItem.number})}">
+                        <div class="more-icon"></div>
+                    </a></td>
+                    <td><input type="submit" value="Save"></td>
+                </form>
+            </tr>
+        </table>
+        <a class="prev-page" th:if="${page > 0}" th:href="${'?page=' + (page - 1)}">Предыдущая</a>
+        <a th:text="${'Текущая: ' + page}"></a>
+        <a class="next-page" th:href="${#strings.concat('?page=', page + 1)}">Следущая</a>
+    </div>
+
+</div>
+<h1>Добавить пользователя</h1>
+<form action="#" th:action="@{/admin/user}" th:object="${user}" method="post">
+    <label> Фамилия:
+        <input type="text" th:field="*{surname}"/>
+    </label>
+    <label> Имя:
+        <input type="text" th:field="*{name}"/>
+    </label>
+    <label> Номер телефона:
+        <input type="text" th:field="*{number}"/>
+    </label>
+
+    <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+</form>
+</body>
+<script>
+    let prev = document.querySelector('.prev-page');
+    let next = document.querySelector('.next-page');
+    let currentUrl = new URL(document.location);
+    if(currentUrl.searchParams.get('number') !== null) {
+        if(prev !== null)
+            prev.search += '&number=' + encodeURIComponent(currentUrl.searchParams.get('number'));
+        if(next !== null)
+            next.search += '&number=' + encodeURIComponent(currentUrl.searchParams.get('number'));
+    }
+</script>
+</html>

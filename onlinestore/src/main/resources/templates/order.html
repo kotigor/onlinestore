@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/orders.css" rel="stylesheet">
+    <title>Order</title>
+</head>
+<body>
+<div class="logout">
+    <a class="back-button" href="/admin">Назад</a>
+    <a class="logout-button" href="/admin/logout">Выйти</a>
+</div>
+<div class="list">
+    <div class="order-list">
+        <form th:action="@{/admin/updateOrder}" th:object="${order}" method="POST">
+            <table class="order-card">
+                <tr>
+                    <td><input class="input-id" readonly type="text" th:field="*{id}"></td>
+                    <td><input readonly type="text" th:field="*{user.surname}"></td>
+                    <td><input readonly type="text" th:field="*{user.name}"></td>
+                    <td><input readonly type="text" th:field="*{user.number}"></td>
+                    <td><input type="date" th:field="*{date}"></td>
+                    <td><input type="text" th:field="*{address}"></td>
+                    <td><select name="deliveryMethod">
+                        <option th:each="delivery : ${T(com.konstantinov.onlinestore.bd.orders.DeliveryMethod).values()}"
+                                th:value="${delivery}" th:text="${delivery}"
+                                th:selected="${delivery == order.deliveryMethod}">
+                    </select></td>
+                    <td><select name="payment">
+                        <option th:each="pay : ${T(com.konstantinov.onlinestore.bd.orders.PaymentMethod).values()}"
+                                th:value="${pay}" th:text="${pay}" th:selected="${pay == order.payment}"></option>
+                    </select></td>
+                    <td><select name="status">
+                        <option th:each="status : ${T(com.konstantinov.onlinestore.bd.orders.OrderStatus).values()}"
+                                th:value="${status}" th:text="${status}"
+                                th:selected="${status == order.status}"></option>
+                    </select></td>
+                </tr>
+            </table>
+            <div class="cakes">
+                <div class="selected">
+                    <div>Выбранные торты:</div>
+                    <div class="selected-container" th:each="cake : ${cakeList}" th:if="${order.cakes.containsKey(cake.id)}">
+                        <div class="allowed-item" th:text="${cake.getName()}" th:id="${cake.getId()}"></div>
+                        <input type="number" th:name="${'cakes[' + cake.id + ']'}" th:value="${order.cakes.get(cake.id)}">
+                    </div>
+                </div>
+                <div class="allowed">
+                    <div>Доступные торты:</div>
+                    <div class="allowed-item" th:each="cake : ${cakeList}" th:text="${cake.getName()}"
+                         th:id="${cake.getId()}" th:unless="${order.cakes.containsKey(cake.id)}"></div>
+                </div>
+            </div>
+            <input type="submit" value="Save">
+        </form>
+    </div>
+</div>
+</body>
+<script>
+
+
+    let sel = document.querySelector('.selected');
+    let allow = document.querySelector('.allowed')
+    document.querySelectorAll('.allowed-item').forEach(function (el) {
+        el.addEventListener('click', function () {
+            this.style.backgroundColor = (this.style.backgroundColor.toString() === 'rgb(139, 139, 141)') ? '' : '#8b8b8d';
+        })
+    });
+    document.querySelectorAll('.allowed-item').forEach(function (el) {
+        el.addEventListener('dblclick', function () {
+            if (this.parentNode.className === 'allowed') {
+                let selContainer = document.createElement('div');
+                selContainer.classList.add('selected-container');
+                let num = document.createElement('input');
+                num.type = 'number';
+                num.name = 'cakes[' + this.id + ']'
+                selContainer.appendChild(this);
+                selContainer.appendChild(num);
+                sel.appendChild(selContainer);
+            } else {
+                let parent = this.parentElement;
+                allow.appendChild(this);
+                parent.remove();
+            }
+        })
+    });
+</script>
+</html>

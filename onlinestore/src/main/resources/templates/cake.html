@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/css/style.css" rel="stylesheet">
+    <link href="/css/reset.css" rel="stylesheet">
+    <link href="/css/cakes.css" rel="stylesheet">
+    <title>Cake</title>
+</head>
+<body>
+<div class="logout">
+    <a class="back-button" href="/admin">Назад</a>
+    <a class="logout-button" href="/admin/logout">Выйти</a>
+</div>
+<h1>Добавить торт</h1>
+<form action="#" th:action="@{/admin/cake}" th:object="${cake}" method="post" enctype="multipart/form-data">
+    <p><label> Id:</label>
+        <input readonly type="text" th:field="*{id}" />
+    </p>
+    <p><label> Название:</label>
+        <input type="text" th:field="*{name}" />
+    </p>
+    <p><label> Калории:</label>
+        <input type="text" th:field="*{calories}" />
+    </p>
+    <p><label> Цена:</label>
+        <input type="text" th:field="*{price}" />
+    </p>
+    <p><label> Вес:</label>
+        <input type="text" th:field="*{weight}" />
+    </p>
+    <p><label> Изображение:</label>
+        <img class="cake-image" th:style="${'background-image: url(/' + cake.image + ')'}">
+        <input type="file" name="imgFile" />
+        <input type="text" th:field="*{image}">
+    </p>
+    <p><label> Описание:</label>
+        <textarea th:field="*{description}"></textarea>
+    </p>
+    <p><label> Состав(ингредиенты разделять переносом строки):</label>
+        <textarea name="composition" th:text="${#strings.setJoin(cake.composition, lineSep)}"></textarea>
+    </p>
+    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+</form>
+</body>
+<script>
+
+</script>
+</html>
