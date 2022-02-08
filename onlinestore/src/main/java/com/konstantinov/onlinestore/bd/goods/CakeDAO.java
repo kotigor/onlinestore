@@ -60,7 +60,6 @@ public class CakeDAO {
 
     public List<CakeEntity> findAll(Integer page, Integer size){
         Map<Long, CakeEntity> map = new HashMap<Long, CakeEntity>();
-        Set<CompositionEntity> compositions = new HashSet<CompositionEntity>();
         try {
             Statement statement = connection.createStatement();
             String SQL = "SELECT cake.ID id_cake, cake.NAME name_cake, CALORIES, IMAGE, PRICE, WEIGHT, DESCRIPTION, c.id comp_id, c.name comp_name FROM cake\n" +
@@ -81,8 +80,7 @@ public class CakeDAO {
                 CompositionEntity composition = new CompositionEntity();
                 composition.setName(resultSet.getString("comp_name"));
                 composition.setId(resultSet.getLong("comp_id"));
-                compositions.add(composition);
-                cakeEntity.setComposition(compositions);
+                cakeEntity.getComposition().add(composition);
             }
         } catch (SQLException e) {
             e.printStackTrace();
