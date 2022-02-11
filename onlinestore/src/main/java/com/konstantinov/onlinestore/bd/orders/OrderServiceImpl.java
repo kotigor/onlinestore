@@ -1,5 +1,6 @@
 package com.konstantinov.onlinestore.bd.orders;
 
+import com.konstantinov.onlinestore.bd.goods.CakeDAO;
 import com.konstantinov.onlinestore.bd.goods.CakeEntity;
 import com.konstantinov.onlinestore.bd.goods.CakeRepository;
 import com.konstantinov.onlinestore.bd.users.UserEntity;
@@ -22,13 +23,15 @@ import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    private final OrderRepository orderRepository;
-    private final CakeRepository cakeRepository;
+    //private final OrderRepository orderRepository;
+    //private final CakeRepository cakeRepository;
     private final UserRepository userRepository;
+    private final OrderDAO orderRepository;
+    private final CakeDAO cakeRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository,
-                            CakeRepository cakeRepository,
+    public OrderServiceImpl(OrderDAO orderRepository,
+                            CakeDAO cakeRepository,
                             UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.cakeRepository = cakeRepository;
@@ -63,7 +66,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getSomeOrder(Integer page) {
         Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
-        List<OrderEntity> orderEntities = orderRepository.findAll(limit).toList();
+        //List<OrderEntity> orderEntities = orderRepository.findAll(limit).toList();
+        List<OrderEntity> orderEntities = orderRepository.findAll();
         return orderEntities.stream().map(this::mapOrderEntityToOrder).collect(Collectors.toList());
     }
 
@@ -119,7 +123,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderByNumber(String number, Integer page) {
         Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
-        List<OrderEntity> orderEntities = orderRepository.findByUser_Number(number, limit);
+        List<OrderEntity> orderEntities = orderRepository.findByUser_Number(number);
         return orderEntities.stream().map(this::mapOrderEntityToOrder).collect(Collectors.toList());
     }
 

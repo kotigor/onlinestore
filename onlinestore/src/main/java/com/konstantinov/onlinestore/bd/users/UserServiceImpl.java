@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService{
-    private final UserRepository userRepository;
+    //private final UserRepository userRepository;
+
+    private final UserDAO userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository){
+    public UserServiceImpl(UserDAO userRepository){
         this.userRepository = userRepository;
     }
 
@@ -52,7 +54,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> getSomeUsers(Integer page){
         Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
-        List<UserEntity> userEntities = userRepository.findAll(limit).toList();
+        //List<UserEntity> userEntities = userRepository.findAll(limit).toList();
+        List<UserEntity> userEntities = userRepository.findAll();
         return userEntities
                 .stream()
                 .map(ue -> mapUserEntityToUser(ue, new User()))
