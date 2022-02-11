@@ -15,7 +15,7 @@ import java.util.*;
 @Table(name = "CAKE")
 public class CakeEntity {
 
-    @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 

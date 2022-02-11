@@ -14,7 +14,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Table(name = "ORDER_CAKE")
 public class OrderCakeEntity {
-    @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 

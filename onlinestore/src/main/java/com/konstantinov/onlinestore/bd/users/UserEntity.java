@@ -12,12 +12,13 @@ import java.util.Objects;
 
 @Entity
 @Getter
-@Setter(AccessLevel.PROTECTED)
+//@Setter(AccessLevel.PROTECTED)
+@Setter
 @ToString
 @RequiredArgsConstructor
 @Table(name = "USER_INFO")
 public class UserEntity {
-    @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 

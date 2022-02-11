@@ -17,12 +17,14 @@ import java.util.stream.Collectors;
 @Service
 public class CakeServiceImpl implements CakeService {
     private final CakeRepository cakeRepository;
+    private final CakeDAO cakeDAO;
     private final CompositionRepository compositionRepository;
 
     @Autowired
-    public CakeServiceImpl(CakeRepository cakeRepository, CompositionRepository compositionRepository) {
+    public CakeServiceImpl(CakeRepository cakeRepository, CompositionRepository compositionRepository, CakeDAO cakeDAO) {
         this.cakeRepository = cakeRepository;
         this.compositionRepository = compositionRepository;
+        this.cakeDAO = cakeDAO;
     }
 
     @Override
@@ -35,7 +37,7 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public CakeDetail getCakeById(Long id) {
-        CakeEntity cakeEntity = cakeRepository.getById(id);
+        CakeEntity cakeEntity = cakeDAO.getById(id);
         CakeDetail cakeDetail = new CakeDetail();
         cakeDetail.setName(cakeEntity.getName());
         cakeDetail.setCalories(cakeEntity.getCalories());
@@ -51,8 +53,9 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public List<Cake> getSomeCake(Integer page, Integer size) {
-        Pageable limit = PageRequest.of(page, size);
-        List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        //Pageable limit = PageRequest.of(page, size);
+        //List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        List<CakeEntity> cakeEntities = cakeDAO.findAll();
         return cakeEntities.stream().map(ce -> {
             Cake cake = new Cake();
             cake.setWeight(ce.getWeight());

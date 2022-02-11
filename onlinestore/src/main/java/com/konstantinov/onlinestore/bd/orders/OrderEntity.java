@@ -18,7 +18,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @Table(name = "ORDER_INFO")
 public class OrderEntity {
-    @Setter(AccessLevel.NONE)
+    //@Setter(AccessLevel.NONE)
     private @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
 
