@@ -56,7 +56,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrderById(Long id) {
-        OrderEntity orderEntity = orderRepository.getById(id);
+        //OrderEntity orderEntity = orderRepository.getById(id);
+        OrderDAO orderDAO = new OrderDAO();
+        OrderEntity orderEntity = orderDAO.getById(id);
         return mapOrderEntityToOrder(orderEntity);
     }
 

@@ -16,11 +16,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class CakeServiceImpl implements CakeService {
-    private final CakeRepository cakeRepository;
-    private final CompositionRepository compositionRepository;
+    private final CakeDAO cakeRepository;
+    private final CompositionDAO compositionRepository;
 
     @Autowired
-    public CakeServiceImpl(CakeRepository cakeRepository, CompositionRepository compositionRepository) {
+    public CakeServiceImpl(CakeDAO cakeRepository, CompositionDAO compositionRepository) {
         this.cakeRepository = cakeRepository;
         this.compositionRepository = compositionRepository;
     }
@@ -52,7 +52,9 @@ public class CakeServiceImpl implements CakeService {
     @Override
     public List<Cake> getSomeCake(Integer page, Integer size) {
         Pageable limit = PageRequest.of(page, size);
-        List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        //List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        List<CakeEntity> cakeEntities = cakeRepository.findAll(page, size);
+
         return cakeEntities.stream().map(ce -> {
             Cake cake = new Cake();
             cake.setWeight(ce.getWeight());
