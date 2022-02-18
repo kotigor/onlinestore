@@ -40,10 +40,10 @@ public class OrderServiceImpl implements OrderService {
         OrderEntity orderEntity = new OrderEntity();
         mapCommonInfoOrderToOrderEntity(order, orderEntity);
         orderEntity.setStatus(OrderStatus.NEW);
-        orderEntity.setUser(userRepository.findByNumber(order.getUser().getNumber()));
+        orderEntity.setUser(userRepository.ffindByNumber(order.getUser().getNumber()));
         List<OrderCakeEntity> orderCakeEntities = new ArrayList<>();
         order.getCakes().forEach((k, v) -> {
-            CakeEntity cakeEntity = cakeRepository.getById(k);
+            CakeEntity cakeEntity = cakeRepository.ggetById(k);
             OrderCakeEntity orderCakeEntity = new OrderCakeEntity();
             orderCakeEntity.setCake(cakeEntity);
             orderCakeEntity.setOrder(orderEntity);
@@ -56,21 +56,21 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order getOrderById(Long id) {
-        OrderEntity orderEntity = orderRepository.getById(id);
+        OrderEntity orderEntity = orderRepository.ggetById(id);
         return mapOrderEntityToOrder(orderEntity);
     }
 
     @Override
     public List<Order> getSomeOrder(Integer page) {
         Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
-        List<OrderEntity> orderEntities = orderRepository.findAll(limit).toList();
+        List<OrderEntity> orderEntities = orderRepository.ffindAll(limit).toList();
         return orderEntities.stream().map(this::mapOrderEntityToOrder).collect(Collectors.toList());
     }
 
     @Override
     public void updateOrderWithoutCakes(Order order) {
         Long id = order.getId();
-        OrderEntity orderEntity = orderRepository.getById(id);
+        OrderEntity orderEntity = orderRepository.ggetById(id);
         orderEntity.setDelivery(order.getDeliveryMethod());
         orderEntity.setDate(LocalDate.parse(order.getDate(), DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         orderEntity.setAddress(order.getAddress());
@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void updateOrder(Order order) {
-        OrderEntity orderEntity = orderRepository.getById(order.getId());
+        OrderEntity orderEntity = orderRepository.ggetById(order.getId());
         mapCommonInfoOrderToOrderEntity(order, orderEntity);
         orderEntity.setStatus(order.getStatus());
 
@@ -106,7 +106,7 @@ public class OrderServiceImpl implements OrderService {
         orderEntity.getCakes().forEach(orderCakeEntity -> orderCakeEntity.setCount(order.getCakes().get(orderCakeEntity.getCake().getId())));
 
         idsToAdd.forEach(i -> {
-            CakeEntity cakeEntity = cakeRepository.getById(i);
+            CakeEntity cakeEntity = cakeRepository.ggetById(i);
             OrderCakeEntity orderCakeEntity = new OrderCakeEntity();
             orderCakeEntity.setCake(cakeEntity);
             orderCakeEntity.setOrder(orderEntity);
@@ -119,7 +119,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderByNumber(String number, Integer page) {
         Pageable limit = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "date"));
-        List<OrderEntity> orderEntities = orderRepository.findByUser_Number(number, limit);
+        List<OrderEntity> orderEntities = orderRepository.ffindByUser_Number(number, limit);
         return orderEntities.stream().map(this::mapOrderEntityToOrder).collect(Collectors.toList());
     }
 
