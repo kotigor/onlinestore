@@ -1,6 +1,5 @@
 package com.konstantinov.onlinestore.bd.goods;
 
-import com.konstantinov.onlinestore.bd.orders.OrderEntity;
 import com.konstantinov.onlinestore.rest.dto.Cake;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Cakes;
@@ -35,7 +34,7 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public CakeDetail getCakeById(Long id) {
-        CakeEntity cakeEntity = cakeRepository.getById(id);
+        CakeEntity cakeEntity = cakeRepository.ggetById(id);
         CakeDetail cakeDetail = new CakeDetail();
         cakeDetail.setName(cakeEntity.getName());
         cakeDetail.setCalories(cakeEntity.getCalories());
@@ -52,7 +51,7 @@ public class CakeServiceImpl implements CakeService {
     @Override
     public List<Cake> getSomeCake(Integer page, Integer size) {
         Pageable limit = PageRequest.of(page, size);
-        List<CakeEntity> cakeEntities = cakeRepository.findAll(limit).toList();
+        List<CakeEntity> cakeEntities = cakeRepository.ffindAll(limit).toList();
         return cakeEntities.stream().map(ce -> {
             Cake cake = new Cake();
             cake.setWeight(ce.getWeight());
@@ -67,7 +66,7 @@ public class CakeServiceImpl implements CakeService {
 
     @Override
     public void updateCake(Cake cake) {
-        CakeEntity ce = cakeRepository.getById(cake.getId());
+        CakeEntity ce = cakeRepository.ggetById(cake.getId());
         ce.setCalories(cake.getCalories());
         ce.setImage(cake.getImage());
         ce.setPrice(cake.getPrice());
@@ -82,7 +81,7 @@ public class CakeServiceImpl implements CakeService {
         if(cakeDetail.getId() == null)
             ce = new CakeEntity();
         else
-            ce = cakeRepository.getById(cakeDetail.getId());
+            ce = cakeRepository.ggetById(cakeDetail.getId());
         ce.setCalories(cakeDetail.getCalories());
         ce.setImage(cakeDetail.getImage());
         ce.setPrice(cakeDetail.getPrice());
@@ -90,7 +89,7 @@ public class CakeServiceImpl implements CakeService {
         ce.setName(cakeDetail.getName());
         ce.setDescription(cakeDetail.getDescription());
         cakeDetail.getComposition().forEach(c -> {
-            CompositionEntity composition = compositionRepository.findByName(c);
+            CompositionEntity composition = compositionRepository.ffindByName(c);
             if(composition == null){
                 composition = new CompositionEntity();
                 composition.setName(c);
