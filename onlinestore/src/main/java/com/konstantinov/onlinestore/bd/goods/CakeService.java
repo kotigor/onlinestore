@@ -13,4 +13,5 @@ public interface CakeService {
     List<Cake> getSomeCake(Integer page, Integer size);
     void updateCake(Cake cake);
     void updateOrCreateCakeDetail(CakeDetail cakeDetail);
+    void getAnyCake() throws InterruptedException;
 }

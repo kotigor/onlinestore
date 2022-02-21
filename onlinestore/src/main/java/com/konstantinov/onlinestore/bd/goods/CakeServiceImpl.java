@@ -4,17 +4,20 @@ import com.konstantinov.onlinestore.bd.orders.OrderEntity;
 import com.konstantinov.onlinestore.rest.dto.Cake;
 import com.konstantinov.onlinestore.rest.dto.CakeDetail;
 import com.konstantinov.onlinestore.rest.dto.Cakes;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class CakeServiceImpl implements CakeService {
     private final CakeRepository cakeRepository;
     private final CompositionRepository compositionRepository;
@@ -30,6 +33,15 @@ public class CakeServiceImpl implements CakeService {
         Cakes cakes = new Cakes();
         cakes.setCakeList(getSomeCake(0, 1000));
         return cakes;
+    }
+
+    @Override
+    @Transactional
+    public void getAnyCake() throws InterruptedException {
+        CakeEntity cake = cakeRepository.getFirstBy();
+        log.warn("{}", cake);
+        Thread.sleep(5000);
+        return;
     }
 
 

@@ -6,11 +6,17 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+
 @ControllerAdvice
 public class CakeAdvice {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CakeNotFoundException.class)
     public void cakeNotFound(){
+
+    }
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(org.hibernate.PessimisticLockException.class)
+    public void transactionException(org.hibernate.PessimisticLockException ex){
 
     }
 }
