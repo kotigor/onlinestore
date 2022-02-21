@@ -38,4 +38,9 @@ public class CakeController {
     public void addCake(@Valid @RequestBody CakeDetail cake){
         cakeService.updateOrCreateCakeDetail(cake);
     }
+
+    @GetMapping(value = "testTransaction")
+    public void test() throws InterruptedException {
+        cakeService.getAnyCake();
+    }
 }
